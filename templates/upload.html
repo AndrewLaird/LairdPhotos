@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Digial Frame Upload</title>
+  <!-- Make layout responsive on mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Add Bootstrap CSS for quick styling -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <!-- Custom CSS to add big block colors and center the form -->
+  <style>
+    body {
+      background-color: #f0f0f0; /* Light gray background for the entire page */
+    }
+
+    .upload-container {
+      /* White card-like container */
+      background-color: #ffffff;
+      margin: 3rem auto;        /* Center horizontally (with auto) and add vertical spacing */
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 600px;         /* Limit width so it’s centered nicely */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+    }
+
+    .upload-title {
+      color: #333;              /* Dark gray title text */
+    }
+
+    .form-label {
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container upload-container">
+    <h1 class="mb-4 upload-title text-center">Upload to Digital Frame</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="files" class="form-label">Select file(s) to upload:</label>
+        <input
+            type="file"
+            class="form-control"
+            id="files"
+            name="files"
+            multiple
+            required
+        />
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Upload</button>
+    </form>
+  </div>
+</body>
+</html>
