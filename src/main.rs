@@ -56,7 +56,7 @@ async fn main() -> std::io::Result<()> {
                 }),
             )
     })
-    .bind("127.0.0.1:4455")?
+    .bind("0.0.0.0:4455")?
     .run();
 
     // Second server runs on port 8081, emailing user2@gmail.com
@@ -70,7 +70,7 @@ async fn main() -> std::io::Result<()> {
                 }),
             )
     })
-    .bind("127.0.0.1:4456")?
+    .bind("0.0.0.0:4456")?
     .run();
 
     // Run both servers in parallel. If either fails, the whole app fails.
