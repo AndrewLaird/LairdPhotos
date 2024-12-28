@@ -4,6 +4,7 @@ use actix_web::{web, App, Error, HttpResponse, HttpServer};
 use actix_multipart::Multipart;
 use futures_util::{future, TryStreamExt};
 use dotenv::dotenv;
+use std::env;
 
 async fn collect_photos(mut payload: Multipart) -> Result<Vec<(String, Vec<u8>)>, Error> {
     let mut files = Vec::new();
@@ -31,9 +32,9 @@ async fn upload_endpoint(payload: Multipart, email: String) -> Result<HttpRespon
     return Ok(HttpResponse::Ok().content_type("text/html").body(result_string))
 }
 
-async fn upload_html() -> HttpResponse {
+async fn upload_html(name: String) -> HttpResponse {
     // Render the HTML template
-    let upload = pages::upload();
+    let upload = pages::upload(name);
     return HttpResponse::Ok().content_type("text/html").body(upload)
 }
 
@@ -45,28 +46,28 @@ async fn main() -> std::io::Result<()> {
     }
 
 
-    // First server runs on port 8080, emailing user1@gmail.com
     let server1 = HttpServer::new(|| {
         App::new()
-            .route("/", web::get().to(upload_html))
+            .route("/", web::get().to(| _: String | upload_html("Laird Family".to_string())))
             .route(
                 "/upload",
                 web::post().to(|payload: Multipart| {
-                    upload_endpoint(payload, "lairdandrew11@gmail.com".to_string())
+                    let laird_email = env::var("LAIRD_EMAIL").unwrap();
+                    upload_endpoint(payload, laird_email.clone())
                 }),
             )
     })
     .bind("0.0.0.0:4455")?
     .run();
 
-    // Second server runs on port 8081, emailing user2@gmail.com
     let server2 = HttpServer::new(|| {
         App::new()
-            .route("/", web::get().to(upload_html))
+            .route("/", web::get().to(| _: String | upload_html("Greene Family".to_string())))
             .route(
                 "/upload",
                 web::post().to(|payload: Multipart| {
-                    upload_endpoint(payload, "lairdandrew11@gmail.com".to_string())
+                    let greene_email = env::var("GREENE_EMAIL").unwrap();
+                    upload_endpoint(payload, greene_email)
                 }),
             )
     })

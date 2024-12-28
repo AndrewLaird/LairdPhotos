@@ -36,7 +36,7 @@
 </head>
 <body>
   <div class="container upload-container">
-    <h1 class="mb-4 upload-title text-center">Upload to Digital Frame</h1>
+    <h1 class="mb-4 upload-title text-center">Upload to {{ name }} Digital Frame</h1>
     <form action="/upload" method="post" enctype="multipart/form-data">
       <div class="mb-3">
         <label for="files" class="form-label">Select file(s) to upload:</label>
@@ -54,3 +54,32 @@
   </div>
 </body>
 </html>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const form = document.querySelector("form");
+
+    form.addEventListener("submit", async function(event) {
+      event.preventDefault(); // Prevent normal form submission
+
+      const formData = new FormData(form);
+      try {
+        const response = await fetch(form.action, {
+          method: form.method,
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error("Network response was not OK (" + response.status + ")");
+        }
+
+        // Since your server returns text/html (not JSON):
+        const serverResponse = await response.text();
+        
+        // Show the server's response in an alert
+        alert(serverResponse);
+      } catch (error) {
+        alert("Error: " + error.message);
+      }
+    });
+  });
+</script>

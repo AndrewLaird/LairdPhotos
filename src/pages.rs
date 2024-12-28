@@ -3,10 +3,12 @@ use askama::Template;
 #[derive(Template)]
 #[template(path = "upload.html")]
 struct UploadTemplate {
+    name: String
 }
 
-pub fn upload() -> String {
+pub fn upload(name: String) -> String {
     let upload = UploadTemplate {
+        name
     };
     return upload.render().unwrap();
 }
