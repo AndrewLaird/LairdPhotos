@@ -56,7 +56,7 @@ async fn main() -> std::io::Result<()> {
                 }),
             )
     })
-    .bind("127.0.0.1:8080")?
+    .bind("127.0.0.1:4455")?
     .run();
 
     // Second server runs on port 8081, emailing user2@gmail.com
@@ -66,11 +66,11 @@ async fn main() -> std::io::Result<()> {
             .route(
                 "/upload",
                 web::post().to(|payload: Multipart| {
-                    upload_endpoint(payload, "second+lairdandrew11@gmail.com".to_string())
+                    upload_endpoint(payload, "lairdandrew11@gmail.com".to_string())
                 }),
             )
     })
-    .bind("127.0.0.1:8081")?
+    .bind("127.0.0.1:4456")?
     .run();
 
     // Run both servers in parallel. If either fails, the whole app fails.
