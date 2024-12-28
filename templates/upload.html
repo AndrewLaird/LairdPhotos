@@ -51,15 +51,25 @@
       </div>
       <button type="submit" class="btn btn-primary w-100">Upload</button>
     </form>
+	<div id="uploadSpinner" class="text-center mt-3" style="display:none;">
+	  <div class="spinner-border text-primary" role="status">
+		<span class="visually-hidden">Uploading...</span>
+	  </div>
+	  <p>Uploading, please wait...</p>
+	</div>
   </div>
 </body>
 </html>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const form = document.querySelector("form");
+    const spinner = document.getElementById("uploadSpinner");
 
     form.addEventListener("submit", async function(event) {
       event.preventDefault(); // Prevent normal form submission
+
+      // Show the spinner
+      spinner.style.display = 'block';
 
       const formData = new FormData(form);
       try {
@@ -72,12 +82,20 @@
           throw new Error("Network response was not OK (" + response.status + ")");
         }
 
-        // Since your server returns text/html (not JSON):
+        // Because your server returns text/html, use response.text()
         const serverResponse = await response.text();
         
+        // Hide the spinner after successful upload
+        spinner.style.display = 'none';
+
         // Show the server's response in an alert
         alert(serverResponse);
+
       } catch (error) {
+        // Hide the spinner if there's an error
+        spinner.style.display = 'none';
+
+        // Show the error
         alert("Error: " + error.message);
       }
     });
